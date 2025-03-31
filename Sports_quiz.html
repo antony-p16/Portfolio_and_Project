@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sports Trivia Quiz</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: yellow;
+}
+
+.header{
+    background: #333;
+    color: white;
+    padding: 15px;
+}
+
+.footer {
+    background: #333;
+    color: white;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+
+.header img, .footer img {
+    width: 50px;
+    height: 50px;
+    vertical-align: middle;
+}
+.quiz-container {
+    margin: 100px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    width: 50%;
+    max-width: 600px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+.question {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+.options {
+    list-style: none;
+    padding: 0;
+}
+.options li {
+    padding: 10px;
+    background: #ddd;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.options li:hover {
+    background: #bbb;
+}
+.hidden {
+    display: none;
+}
+.submit-btn {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+}
+</style>
+</head>
+<body>
+
+
+<div class="header">
+    <img src="https://financialexpresswpcontent.s3.amazonaws.com/uploads/2017/11/new-f1-logo.jpg" width = 150 alt="F1">
+    <img src="https://logolook.net/wp-content/uploads/2023/02/FIFA-Logo.png" alt="Football">
+    <img src="https://m.greaterkashmir.com/sortd-service/imaginary/v22-01/jpg/large/high?url=Z3JlYXRlcmthc2htaXItc29ydGQtcHJvLXByb2Qtc29ydGQvbWVkaWEyYjdlYTcyMC03NDI0LTExZWYtYjBiYy02MzljMDFjYjVjZDMuanBn" alt="Cricket">
+    <h1>Sports Trivia Quiz</h1>
+</div>
+
+
+<div class="quiz-container">
+    <div id="quiz-content">
+        
+    </div>
+    <button id="submit-btn" class="submit-btn">Submit</button>
+</div>
+
+
+<div class="footer">
+    <p>&copy; 2025 Quiz Master. All rights reserved.</p>
+</div>
+
+<script>
+const questions = [
+    { 
+        question: "Who holds the record for most Formula 1 World Championships?", 
+        options: ["Michael Schumacher", "Lewis Hamilton", "Sebastian Vettel", "Ayrton Senna"], 
+        answer: "Michael Schumacher"
+    },
+    { 
+        question: "Which country won the first FIFA World Cup in 1930?", 
+        options: ["Brazil", "Argentina", "Uruguay", "Germany"], 
+        answer: "Uruguay"
+    },
+    { 
+        question: "Who has scored the most international goals in men's football?", 
+        options: ["Cristiano Ronaldo", "Pele", "Lionel Messi", "Ali Daei"], 
+        answer: "Cristiano Ronaldo"
+    },
+    { 
+        question: "Which cricketer has the highest individual score in Test cricket?", 
+        options: ["Brian Lara", "Sachin Tendulkar", "Don Bradman", "Virender Sehwag"], 
+        answer: "Brian Lara"
+    },
+    { 
+        question: "Which Formula 1 team has won the most Constructors' Championships?", 
+        options: ["Ferrari", "Mercedes", "Red Bull", "McLaren"], 
+        answer: "Ferrari"
+    },
+    { 
+        question: "Who is the only footballer to win three FIFA World Cups?", 
+        options: ["Diego Maradona", "Pele", "Zinedine Zidane", "Ronaldo Nazário"], 
+        answer: "Pele"
+    },
+    { 
+        question: "Who bowled the fastest recorded delivery in cricket history?", 
+        options: ["Shoaib Akhtar", "Brett Lee", "Jeff Thomson", "Mitchell Starc"], 
+        answer: "Shoaib Akhtar"
+    },
+    { 
+        question: "Which F1 Grand Prix is known as the 'Jewel in the Crown'?", 
+        options: ["Monaco GP", "Silverstone GP", "Monza GP", "Singapore GP"], 
+        answer: "Monaco GP"
+    },
+    { 
+        question: "Who won the most Ballon d'Or awards in football history?", 
+        options: ["Cristiano Ronaldo", "Lionel Messi", "Johan Cruyff", "Michel Platini"], 
+        answer: "Lionel Messi"
+    },
+    { 
+        question: "Which team has won the most Cricket World Cups?", 
+        options: ["India", "Australia", "West Indies", "England"], 
+        answer: "Australia"
+    }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+function loadQuestion() {
+    let quizContent = document.getElementById("quiz-content");
+    quizContent.innerHTML = `
+        <div class="question">${questions[currentQuestion].question}</div>
+        <ul class="options">
+            ${questions[currentQuestion].options.map(option => `<li onclick="selectOption(this)">${option}</li>`).join('')}
+        </ul>
+    `;
+
+    
+    if (currentQuestion === questions.length - 1) {
+        document.getElementById("submit-btn").style.display = "block";
+    } else {
+        document.getElementById("submit-btn").style.display = "none";
+    }
+}
+
+function selectOption(option) {
+    let options = document.querySelectorAll(".options li");
+    options.forEach(opt => opt.style.background = "#ddd");
+
+    option.style.background = "#8f8"; 
+    let selectedAnswer = option.innerText;
+    if (selectedAnswer === questions[currentQuestion].answer) {
+        score++; 
+    }
+}
+
+
+document.addEventListener("keydown", (event) => {
+    if (event.code === "ArrowRight" && currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+    }
+});
+
+document.getElementById("submit-btn").addEventListener("click", () => {
+    let message = "";
+    
+    if (score >= 8) {
+        message = "You are a sports trivia wizard 🏆";
+    } else if (score >= 4) {
+        message = "Not bad, good attempt!! 👍";
+    } else {
+        message = "Hmm, I am assuming you don't watch much sports then? 😅";
+    }
+    
+    alert(`Your Score: ${score}/${questions.length}\n\n${message}`);
+});
+
+
+loadQuestion();
+</script>
+
+</body>
+</html>

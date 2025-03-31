@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <style>
+    :root {
+      --primary: #ffd700;
+      --primary-dark: #e6c200;
+      --text: #ffffff;
+      --background: #121212;
+      --card: #1e1e1e;
+      --item: #2a2a2a;
+      --completed: #32cd32;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: black;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .task-form {
+      padding: 1.5rem;
+      display: flex;
+      gap: 12px;
+      border-bottom: 1px solid #333;
+    }
+    
+    .task-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      background-color: #333;
+      color: white;
+    }
+    
+    .task-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    
+    .btn {
+      cursor: pointer;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: black;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .tasks-container {
+      padding: 1rem;
+    }
+    
+    .task-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      background-color: var(--item);
+    }
+    
+    .task-check {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--primary);
+      border-radius: 6px;
+      margin-right: 12px;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .task-check:checked {
+      background-color: var(--primary);
+    }
+    
+    .task-check:checked::after {
+      content: '✓';
+      color: black;
+      position: absolute;
+      top: -2px;
+      left: 4px;
+      font-size: 16px;
+    }
+    
+    .task-check:checked + .task-name {
+      color: var(--completed);
+    }
+    
+    .task-name {
+      flex: 1;
+      font-size: 1.1rem;
+    }
+    
+    .delete-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text);
+      width: 30px;
+      height: 30px;
+      font-size: 1.2rem;
+    }
+    
+    .delete-btn:hover {
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>To-Do List</h1>
+    </header>
+    
+    <form class="task-form" onsubmit="addTask(event)">
+      <input type="text" class="task-input" placeholder="Add a new task...">
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+    
+    <div class="tasks-container"></div>
+  </div>
+
+  <script>
+    function addTask(event) {
+      event.preventDefault();
+      let input = document.querySelector(".task-input");
+      let taskText = input.value.trim();
+      if (!taskText) return;
+      
+      let taskItem = document.createElement("div");
+      taskItem.classList.add("task-item");
+      taskItem.innerHTML = `<input type="checkbox" class="task-check" onchange="toggleTask(this)"> <span class="task-name">${taskText}</span> <button class="delete-btn" onclick="deleteTask(this)">×</button>`;
+      document.querySelector(".tasks-container").appendChild(taskItem);
+      input.value = "";
+    }
+    
+    function deleteTask(button) {
+      button.parentElement.remove();
+    }
+
+    function toggleTask(checkbox) {
+      let taskName = checkbox.nextElementSibling;
+      if (checkbox.checked) {
+        taskName.style.color = "var(--completed)";
+      } else {
+        taskName.style.color = "var(--text)";
+      }
+    }
+  </script>
+</body>
+</html>

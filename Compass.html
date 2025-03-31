@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass Implementation</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: lightblue;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+h1 {
+    font-size: 2rem;
+}
+p {
+    font-size: 1rem;
+    color: gray;
+    margin-bottom: 20px;
+}
+.compass-container {
+    position: relative;
+}
+.compass {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: silver;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+.inner-circle {
+    width: 180px;
+    height: 180px;
+    background: black;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s ease;
+}
+.needle {
+    width: 4px;
+    height: 60px; /* Short needle */
+    background: red;
+    position: absolute;
+    top: 50px; /* Adjusted to start from the screw */
+    z-index: 10;
+}
+.needle::before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid red;
+    position: absolute;
+    top: -10px;
+    left: -4px;
+}
+.screw {
+    width: 12px;
+    height: 12px;
+    background: silver;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 15;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.directions {
+    position: absolute;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+}
+.n { top: 10px; left: 50%; transform: translateX(-50%); }
+.s { bottom: 10px; left: 50%; transform: translateX(-50%); }
+.e { right: 10px; top: 50%; transform: translateY(-50%); }
+.w { left: 10px; top: 50%; transform: translateY(-50%); }
+</style>
+</head>
+<body>
+
+<h1>Compass Implementation</h1>
+<p>Press SPACE to start</p>
+
+<div class="compass-container">
+    <div class="compass">
+        <div class="needle"></div>
+        <div class="screw"></div> 
+        <div class="inner-circle">
+            <div class="directions n">N</div>
+            <div class="directions s">S</div>
+            <div class="directions e">E</div>
+            <div class="directions w">W</div>
+        </div>
+    </div>
+</div>
+
+<script>
+let isActive = false;
+const innerCircle = document.querySelector(".inner-circle");
+
+document.addEventListener("keydown", (event) => {
+    if (event.code === "Space") {
+        isActive = true;
+    }
+});
+
+document.addEventListener("mousemove", (event) => {
+    if (!isActive) return;
+
+    let mouseX = event.clientX;
+    let mouseY = event.clientY;
+    let compassRect = document.querySelector(".compass").getBoundingClientRect();
+    let compassX = compassRect.left + compassRect.width / 2;
+    let compassY = compassRect.top + compassRect.height / 2;
+    let deltaX = mouseX - compassX;
+    let deltaY = mouseY - compassY;
+    let angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 180;
+
+    
+    innerCircle.style.transform = `rotate(${angle}deg)`;
+});
+</script>
+
+</body>
+</html>
